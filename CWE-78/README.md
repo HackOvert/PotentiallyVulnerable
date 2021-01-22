@@ -10,3 +10,9 @@ Want to see real-world examples of CWE-78 from amazing security researchers? Che
 | --- | --- | --- |
 | `SystemCallAuditorGhidra.py` | Ghidra v9.2.1 | Checks system calls for potentially vulnerable command injections |
 | `SystemCallAuditorBinja.py` | Binary Ninja v2.2.2487 | Checks system calls for potentially vulnerable command injections |
+
+## What's this binary?
+The binary in this folder `tdpServer` comes from the TP-Link Archer A7 (AC1750) router, hardware version 5, MIPS Architecture, firmware version 190726. It contains a command injection via a system call. For more details check out this [ZDI blog post](https://www.thezdi.com/blog/2020/4/6/exploiting-the-tp-link-archer-c7-at-pwn2own-tokyo). Each of the scripts in this directory will find this vulnerable system call.
+
+## Can I see an example of these scripts running?
+Wow, how conveinient of you to ask! I just happen to have two videos that highlight each of these scripts in action. Check out the [Binary Ninja version](https://www.youtube.com/watch?v=F3uh8DuS0tE) and the [Ghidra version](https://www.youtube.com/watch?v=UVNeg7Vqytc).
