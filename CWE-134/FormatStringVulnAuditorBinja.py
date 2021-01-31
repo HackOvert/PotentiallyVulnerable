@@ -3,14 +3,6 @@ import binaryninja
 
 from os.path import isfile
 
-# $GME💎🤲🚀🚀🚀🌕
-
-# python3 FormatStringVulnAuditorBinja.py bin\CWE134_s01
-
-# Examples of interesting functions:
-# CWE134_Uncontrolled_Format_String__char_connect_socket_printf_15_bad   - MLIL vs HLIL
-# CWE134_Uncontrolled_Format_String__char_console_printf_74::goodG2BSink - Resolving parameters
-
 DEBUG = False
 
 sources = {
