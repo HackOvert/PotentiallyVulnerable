@@ -20,7 +20,6 @@ sinks = [
     'system',   # int system(const char *command);
 ]
 
-
 def get_high_function(func):
     options = DecompileOptions()
     monitor = ConsoleTaskMonitor()
