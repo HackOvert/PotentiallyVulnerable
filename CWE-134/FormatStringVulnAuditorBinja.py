@@ -3,6 +3,14 @@ import binaryninja
 
 from os.path import isfile
 
+# $GME💎🤲🚀🚀🚀🌕
+
+# python3 FormatStringVulnAuditorBinja.py bin\CWE134_s01
+
+# Examples of interesting functions:
+# CWE134_Uncontrolled_Format_String__char_connect_socket_printf_15_bad   - MLIL vs HLIL
+# CWE134_Uncontrolled_Format_String__char_console_printf_74::goodG2BSink - Resolving parameters
+
 DEBUG = False
 
 sources = {
@@ -60,7 +68,8 @@ def main(target):
                         fparam = params[sinks[sink]]
                         if fparam.expr_type and fparam.expr_type.const:
                             debug_print("0x{:08x} : {} is SAFE!".format(hlil_ins.address, fparam))
-                        
+                            continue
+
                         target_var = None
                         try:
                             if fparam.operation == binaryninja.HighLevelILOperation.HLIL_VAR:
@@ -102,12 +111,9 @@ def main(target):
                                         target_param_index = sources[str(use.instr.src.dest)]
                                         if len(params) >= (target_param_index + 1):
                                             target_param = params[target_param_index]
-                                            if type(target_param) == binaryninja.function.Variable and p == target_var:
-                                                print("ALERT! - Function: {} : 0x{:X}".format(func.name, func.start))
-                                            else:
-                                                for p in target_param.prefix_operands:
-                                                    if type(p) == binaryninja.function.Variable and p == target_var:
-                                                        print("ALERT! - Function: {} : 0x{:X}".format(func.name, func.start))
+                                            for p in target_param.prefix_operands:
+                                                if type(p) == binaryninja.function.Variable and p == target_var:
+                                                    print("ALERT! - Function: {} : 0x{:X}".format(func.name, func.start))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Analyze a binary target for format string vulnerabilities.')
