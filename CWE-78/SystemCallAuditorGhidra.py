@@ -21,9 +21,9 @@ sinks = [
 ]
 
 bitness_masks = {
-	'16': 0xffff,
-	'32': 0xffffffff,
-	'64': 0xffffffffffffffff,
+    '16': 0xffff,
+    '32': 0xffffffff,
+    '64': 0xffffffffffffffff,
 }
 
 def get_high_function(func):
