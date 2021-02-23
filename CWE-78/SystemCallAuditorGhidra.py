@@ -20,6 +20,12 @@ sinks = [
     'system',   # int system(const char *command);
 ]
 
+bitness_masks = {
+	'16': 0xffff,
+	'32': 0xffffffff,
+	'64': 0xffffffffffffffff,
+}
+
 def get_high_function(func):
     options = DecompileOptions()
     monitor = ConsoleTaskMonitor()
@@ -34,14 +40,16 @@ def get_stack_var_from_varnode(func, varnode):
     if type(varnode) not in [Varnode, VarnodeAST]:
         raise Exception("Invalid value passed to get_stack_var_from_varnode(). Expected `Varnode` or `VarnodeAST`, got {}.".format(type(varnode)))
     
+    bitmask = bitness_masks[currentProgram.getMetadata()['Address Size']]
+
     local_variables = func.getAllVariables()
     vndef = varnode.getDef()
     if vndef:
         vndef_inputs = vndef.getInputs()
         for defop_input in vndef_inputs:
-            defop_input_offset = defop_input.getAddress().getOffset()
+            defop_input_offset = defop_input.getAddress().getOffset() & bitmask
             for lv in local_variables:
-                unsigned_lv_offset = lv.getMinAddress().getUnsignedOffset()
+                unsigned_lv_offset = lv.getMinAddress().getUnsignedOffset() & bitmask
                 if unsigned_lv_offset == defop_input_offset:
                     return lv
         
@@ -50,11 +58,11 @@ def get_stack_var_from_varnode(func, varnode):
         lsm = hf.getLocalSymbolMap()
 
         for vndef_input in vndef_inputs:
-            defop_input_offset = vndef_input.getAddress().getOffset()
+            defop_input_offset = vndef_input.getAddress().getOffset() & bitmask
             for symbol in lsm.getSymbols():
                 if symbol.isParameter(): 
                     continue
-                if defop_input_offset == symbol.getStorage().getFirstVarnode().getOffset():
+                if defop_input_offset == symbol.getStorage().getFirstVarnode().getOffset() & bitmask:
                     return symbol
 
     # unable to resolve stack variable for given varnode
